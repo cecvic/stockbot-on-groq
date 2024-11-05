@@ -12,8 +12,8 @@ export const metadata = {
     ? new URL(`https://${process.env.VERCEL_URL}`)
     : undefined,
   title: {
-    default: 'StockBot powered by Groq',
-    template: `%s - StockBot powered by Groq`
+    default: 'TradingView Bot by Trendhubs',
+    template: `%s - TradingView Bot by Trendhubs`
   },
   description:
     'Lightning Fast AI Chatbot that Responds With Live Interactive Stock Charts, Financials, News, Screeners, and More.',

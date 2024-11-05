@@ -12,7 +12,7 @@ export function FooterText({ className, ...props }: React.ComponentProps<'p'>) {
       )}
       {...props}
     >
-      StockBot may provide inaccurate information and does not provide
+      Tradingview Bot does not provide
       investment advice.
     </p>
   )

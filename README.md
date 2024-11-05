@@ -1,9 +1,9 @@
 <h2 align="center">
  <br>
- <img src="https://i.imgur.com/f1C7EdN.png" alt="AI StockBot Powered by Groq with Tool Use and Generative UI" width="250">
+ <img src="https://i.imgur.com/f1C7EdN.png" alt="AI TradingView Bot by Trendhubs with Tool Use and Generative UI" width="250">
  <br>
  <br>
- StockBot Powered by Groq: Lightning Fast AI Chatbot that Responds With Live Interactive Stock Charts, Financials, News, Screeners, and More 
+ TradingView Bot by Trendhubs: Lightning Fast AI Chatbot that Responds With Live Interactive Stock Charts, Financials, News, Screeners, and More 
  <br>
 </h2>
 
@@ -27,7 +27,7 @@
 StockBot is an AI-powered chatbot that leverages Llama3 70b on Groq, Vercel’s AI SDK, and TradingView’s live widgets to respond in conversation with live, interactive charts and interfaces specifically tailored to your requests. Groq's speed makes tool calling and providing a response near instantaneous, allowing for a sequence of two API calls with separate specialized prompts to return a response.
 
 > [!IMPORTANT]
->  Note: StockBot may provide inaccurate information and does not provide investment advice. It is for entertainment and instructional use only.
+>  Note: TradingView Bot may provide inaccurate information and does not provide investment advice. It is for entertainment and instructional use only.
 
 ## Features
 
