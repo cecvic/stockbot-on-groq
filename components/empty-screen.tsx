@@ -1,13 +1,12 @@
-import { UseChatHelpers } from 'ai/react'
+'use client'
+
 import { Button } from './ui/button'
 import { ExternalLink } from './external-link'
 import { IconArrowRight } from './ui/icons'
 import Image from 'next/image'
 import { nanoid } from 'nanoid'
 import { UserMessage } from './stocks/message'
-import { useUIState, useActions } from 'ai/rsc'
-import type { AI } from '../lib/chat/actions'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const exampleMessages = [
   {
@@ -32,21 +31,13 @@ const exampleMessages = [
   }
 ]
 
-export function EmptyScreen() {
-  const [messages, setMessages] = useUIState<typeof AI>()
-  const { submitUserMessage } = useActions()
+interface EmptyScreenProps {
+  onMessageSubmit: (message: string) => void
+}
 
-  const handleExampleClick = async (message: string) => {
-    setMessages(currentMessages => [
-      ...currentMessages,
-      {
-        id: nanoid(),
-        display: <UserMessage>{message}</UserMessage>
-      }
-    ])
-
-    const responseMessage = await submitUserMessage(message)
-    setMessages(currentMessages => [...currentMessages, responseMessage])
+export function EmptyScreen({ onMessageSubmit }: EmptyScreenProps) {
+  const handleExampleClick = (message: string) => {
+    onMessageSubmit(message)
   }
 
   return (
@@ -91,6 +82,12 @@ export function EmptyScreen() {
             type="text"
             placeholder="Ask a question..."
             className="flex-1 bg-transparent border-none focus:outline-none text-white px-2"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && e.currentTarget.value) {
+                handleExampleClick(e.currentTarget.value)
+                e.currentTarget.value = ''
+              }
+            }}
           />
           <button className="p-2 hover:bg-gray-800 rounded-lg">
             <IconArrowRight className="h-5 w-5 text-white" />

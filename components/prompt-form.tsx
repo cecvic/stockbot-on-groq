@@ -2,37 +2,30 @@
 
 import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
-
-import { useActions, useUIState } from 'ai/rsc'
-
-import { UserMessage } from './stocks/message'
-import { type AI } from '@/lib/chat/actions'
-import { Button } from '@/components/ui/button'
-import { IconArrowDown, IconPlus } from '@/components/ui/icons'
+import { Button } from './ui/button'
+import { IconArrowDown, IconPlus } from './ui/icons'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '@/components/ui/tooltip'
-import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
-import { nanoid } from 'nanoid'
+} from './ui/tooltip'
+import { useEnterSubmit } from '../lib/hooks/use-enter-submit'
 import { useRouter } from 'next/navigation'
 
-import { useLocalStorage } from '@/lib/hooks/use-local-storage'
+export interface PromptFormProps {
+  input: string
+  setInput: (value: string) => void
+  onSubmit: (value: string) => void
+}
 
 export function PromptForm({
   input,
-  setInput
-}: {
-  input: string
-  setInput: (value: string) => void
-}) {
+  setInput,
+  onSubmit
+}: PromptFormProps) {
   const router = useRouter()
   const { formRef, onKeyDown } = useEnterSubmit()
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
-  const { submitUserMessage } = useActions()
-  const [_, setMessages] = useUIState<typeof AI>()
-  const [apiKey, setApiKey] = useLocalStorage('groqKey', '')
 
   React.useEffect(() => {
     if (inputRef.current) {
@@ -43,30 +36,19 @@ export function PromptForm({
   return (
     <form
       ref={formRef}
-      onSubmit={async (e: any) => {
+      onSubmit={async (e: React.FormEvent) => {
         e.preventDefault()
 
         // Blur focus on mobile
         if (window.innerWidth < 600) {
-          e.target['message']?.blur()
+          inputRef.current?.blur()
         }
 
         const value = input.trim()
         setInput('')
         if (!value) return
 
-        // Optimistically add user message UI
-        setMessages(currentMessages => [
-          ...currentMessages,
-          {
-            id: nanoid(),
-            display: <UserMessage>{value}</UserMessage>
-          }
-        ])
-
-        // Submit and get response message
-        const responseMessage = await submitUserMessage(value, apiKey)
-        setMessages(currentMessages => [...currentMessages, responseMessage])
+        onSubmit(value)
       }}
     >
       <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background px-8 sm:border sm:px-12">

@@ -1,7 +1,8 @@
-import { CoreMessage } from 'ai'
+import { Message as AIMessage } from 'ai'
 
-export type Message = CoreMessage & {
+export type Message = AIMessage & {
   id: string
+  createdAt?: Date
 }
 
 export interface Chat extends Record<string, any> {

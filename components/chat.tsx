@@ -5,14 +5,14 @@ import { ChatList } from './chat-list'
 import { ChatPanel } from './chat-panel'
 import { EmptyScreen } from './empty-screen'
 import { useLocalStorage } from '../lib/hooks/use-local-storage'
-import { useEffect, useState } from 'react'
-import { useUIState, useAIState } from 'ai/rsc'
+import { useEffect } from 'react'
 import { Message, Session } from '../lib/types'
 import { usePathname, useRouter } from 'next/navigation'
 import { useScrollAnchor } from '../lib/hooks/use-scroll-anchor'
 import { toast } from 'sonner'
 import { TickerTape } from './tradingview/ticker-tape'
 import { MissingApiKeyBanner } from './missing-api-key-banner'
+import { useChat } from 'ai/react'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
@@ -24,11 +24,21 @@ export interface ChatProps extends React.ComponentProps<'div'> {
 export function Chat({ id, className, session, missingKeys }: ChatProps) {
   const router = useRouter()
   const path = usePathname()
-  const [input, setInput] = useState('')
-  const [messages] = useUIState()
-  const [aiState] = useAIState()
-
   const [_, setNewChatId] = useLocalStorage('newChatId', id)
+  
+  const { messages, input, setInput, handleSubmit: chatSubmit } = useChat({
+    api: '/api/chat',
+    id,
+    body: {
+      id,
+      userId: session?.user?.id
+    },
+    onResponse(response) {
+      if (response.ok) {
+        router.refresh()
+      }
+    }
+  })
 
   useEffect(() => {
     if (session?.user) {
@@ -39,16 +49,8 @@ export function Chat({ id, className, session, missingKeys }: ChatProps) {
   }, [id, path, session?.user, messages])
 
   useEffect(() => {
-    const messagesLength = aiState.messages?.length
-    if (messagesLength === 2) {
-      router.refresh()
-    }
-    console.log('Value: ', aiState.messages)
-  }, [aiState.messages, router])
-
-  useEffect(() => {
     setNewChatId(id)
-  })
+  }, [id, setNewChatId])
 
   useEffect(() => {
     missingKeys.map(key => {
@@ -58,6 +60,29 @@ export function Chat({ id, className, session, missingKeys }: ChatProps) {
 
   const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } =
     useScrollAnchor()
+
+  const handleMessageSubmit = async (value: string) => {
+    try {
+      setInput(value)
+      const event = {
+        preventDefault: () => {},
+        currentTarget: {
+          elements: {
+            message: { value }
+          }
+        }
+      } as unknown as React.FormEvent<HTMLFormElement>
+      await chatSubmit(event)
+    } catch (error) {
+      console.error('Error sending message:', error)
+      toast.error('Failed to send message')
+    }
+  }
+
+  const chatMessages: Message[] = messages.map(msg => ({
+    ...msg,
+    createdAt: new Date()
+  }))
 
   return (
     <div
@@ -79,9 +104,13 @@ export function Chat({ id, className, session, missingKeys }: ChatProps) {
         ref={messagesRef}
       >
         {messages.length ? (
-          <ChatList messages={messages} isShared={false} session={session} />
+          <ChatList 
+            messages={chatMessages}
+            isShared={false} 
+            session={session} 
+          />
         ) : (
-          <EmptyScreen />
+          <EmptyScreen onMessageSubmit={handleMessageSubmit} />
         )}
         <div className="w-full h-px" ref={visibilityRef} />
       </div>
@@ -91,6 +120,7 @@ export function Chat({ id, className, session, missingKeys }: ChatProps) {
         setInput={setInput}
         isAtBottom={isAtBottom}
         scrollToBottom={scrollToBottom}
+        onSubmit={handleMessageSubmit}
       />
     </div>
   )

@@ -6,6 +6,7 @@ import { cn } from '../lib/utils'
 import { Providers } from '../components/providers'
 import { Header } from '../components/header'
 import { Toaster } from '../components/ui/sonner'
+import { ChatSidebar } from '../components/chat-sidebar'
 
 export const metadata = {
   metadataBase: process.env.VERCEL_URL
@@ -54,15 +55,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <div className="flex h-screen">
             {/* Sidebar */}
-            <div className="w-64 border-r border-gray-800 flex flex-col">
-              <div className="p-4">
-                <button className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 flex items-center justify-center">
-                  + New Chat
-                </button>
-              </div>
-              <div className="flex-1 overflow-auto p-2">
-                {/* Recent chats will go here */}
-              </div>
+            <div className="w-64 border-r border-gray-800">
+              <ChatSidebar />
             </div>
             
             {/* Main content */}
