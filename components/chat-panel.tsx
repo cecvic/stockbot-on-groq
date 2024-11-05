@@ -35,7 +35,7 @@ export function ChatPanel({
         scrollToBottom={scrollToBottom}
       />
 
-      <div className="mx-auto sm:max-w-2xl sm:px-4">
+      <div className="mx-auto sm:max-w-5xl sm:px-4">
         <div className="space-y-4 border-t border-gray-800 bg-[#0D0D0D] px-4 py-2 shadow-lg sm:border md:py-4">
           <PromptForm input={input} setInput={setInput} />
           <FooterText className="hidden sm:block" />

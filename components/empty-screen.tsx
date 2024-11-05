@@ -63,7 +63,7 @@ export function EmptyScreen() {
       </div>
 
       {/* Prompts Section */}
-      <div className="w-full max-w-4xl px-4">
+      <div className="w-full max-w-5xl px-4">
         <h2 className="text-xl font-semibold mb-4 text-center">Prompts</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {exampleMessages.map((example, index) => (
@@ -85,7 +85,7 @@ export function EmptyScreen() {
       </div>
 
       {/* Input Box */}
-      <div className="fixed bottom-4 w-full max-w-4xl px-4">
+      <div className="fixed bottom-4 w-full max-w-5xl px-4">
         <div className="flex items-center gap-2 w-full bg-gray-900 rounded-lg border border-gray-800 p-2">
           <input
             type="text"

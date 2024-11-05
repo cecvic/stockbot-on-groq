@@ -1,18 +1,18 @@
 'use client'
 
-import { cn } from '@/lib/utils'
-import { ChatList } from '@/components/chat-list'
-import { ChatPanel } from '@/components/chat-panel'
-import { EmptyScreen } from '@/components/empty-screen'
-import { useLocalStorage } from '@/lib/hooks/use-local-storage'
+import { cn } from '../lib/utils'
+import { ChatList } from './chat-list'
+import { ChatPanel } from './chat-panel'
+import { EmptyScreen } from './empty-screen'
+import { useLocalStorage } from '../lib/hooks/use-local-storage'
 import { useEffect, useState } from 'react'
 import { useUIState, useAIState } from 'ai/rsc'
-import { Message, Session } from '@/lib/types'
+import { Message, Session } from '../lib/types'
 import { usePathname, useRouter } from 'next/navigation'
-import { useScrollAnchor } from '@/lib/hooks/use-scroll-anchor'
+import { useScrollAnchor } from '../lib/hooks/use-scroll-anchor'
 import { toast } from 'sonner'
-import { TickerTape } from '@/components/tradingview/ticker-tape'
-import { MissingApiKeyBanner } from '@/components/missing-api-key-banner'
+import { TickerTape } from './tradingview/ticker-tape'
+import { MissingApiKeyBanner } from './missing-api-key-banner'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
@@ -72,6 +72,7 @@ export function Chat({ id, className, session, missingKeys }: ChatProps) {
 
       <div
         className={cn(
+          'max-w-5xl mx-auto px-4',
           messages.length ? 'pb-[200px] pt-4 md:pt-6' : 'pb-[200px] pt-0',
           className
         )}
