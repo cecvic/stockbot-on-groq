@@ -11,10 +11,10 @@ export function ThemeToggle() {
   const [_, startTransition] = React.useTransition()
 
   return (
-    <div className="fixed bottom-1 left-1 z-50 flex size-6 items-center justify-center rounded-full p-4 font-mono text-xs text-white">
+    <div className="fixed top-4 right-4 z-50">
       <Button
-        size="icon"
-        variant="link"
+        variant="outline"
+        className="rounded-full bg-background px-4 py-2 flex items-center gap-2"
         onClick={() => {
           startTransition(() => {
             setTheme(theme === 'light' ? 'dark' : 'light')
@@ -22,9 +22,15 @@ export function ThemeToggle() {
         }}
       >
         {!theme ? null : theme === 'dark' ? (
-          <IconMoon className="transition-all" />
+          <>
+            <IconMoon className="size-6 transition-all" />
+            <span className="text-sm font-medium">Switch Mode</span>
+          </>
         ) : (
-          <IconSun className="transition-all" />
+          <>
+            <IconSun className="size-6 transition-all" />
+            <span className="text-sm font-medium">Switch Mode</span>
+          </>
         )}
         <span className="sr-only">Toggle theme</span>
       </Button>
